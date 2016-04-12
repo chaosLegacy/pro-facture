@@ -141,6 +141,24 @@ angular.module('app')
                   files: [
                       'vendor/modules/videogular/plugins/ima-ads.min.js'
                   ]
+              },
+              {
+                  name: 'ServiceClients',
+                  files: [
+                      'js/services/ClientServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceFournisseurs',
+                  files: [
+                      'js/services/FournisseurServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceUsers',
+                  files: [
+                      'js/services/UserServ.js'
+                  ]
               }
           ]
       });

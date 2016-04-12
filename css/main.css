@@ -1,0 +1,133 @@
+/* 
+    Created on : Mar 18, 2016, 12:18:57 AM
+    Author     : Youssef
+*/
+.logo-header {
+    max-height: 70px !important;
+}
+.form-box {
+    background-color: rgba(255,255,255,.78);
+    box-shadow: 1px 2px 7px rgba(0,0,0,.55);
+}
+
+.help-block {
+    margin-bottom: 0;
+}
+
+.slide.ng-hide-add,
+.slide.ng-hide-remove {
+    -webkit-transition: all linear 0.5s;
+    -moz-transition: all linear 0.5s;
+    -o-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+    display: block!important;
+}
+.slide.ng-hide-add.ng-hide-add-active,
+.slide.ng-hide-remove {
+    opacity: 0;
+}
+.slide.ng-hide-add,
+.slide.ng-hide-remove.ng-hide-remove-active {
+    opacity: 1;
+}
+
+.slider {
+    position: relative;
+}
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+.loading-container .loading {
+    padding: 14px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-overflow: ellipsis;
+}
+.loading-container .loading img {
+    opacity: .71;
+}
+.loading-container.visible {
+    visibility: visible;
+}
+.loading-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 13;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-transition: 0.2s opacity linear;
+    transition: 0.2s opacity linear;
+    background-color: rgba(0,0,0,.2);
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 800px) {
+
+    /* Force table to not be like tables anymore */
+    .responsive-table table,
+    .responsive-table thead,
+    .responsive-table tbody,
+    .responsive-table th,
+    .responsive-table td,
+    .responsive-table tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .responsive-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .responsive-table tr { border: 1px solid #ccc; }
+
+    .responsive-table td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50% !important;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .responsive-table td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    .responsive-table td:before { content: attr(data-title); }
+}

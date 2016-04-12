@@ -9,11 +9,19 @@ angular.module('app')
       var isIE = !!navigator.userAgent.match(/MSIE/i);
       isIE && angular.element($window.document.body).addClass('ie');
       isSmartDevice( $window ) && angular.element($window.document.body).addClass('smart');
-
+      
+      var curdate = new Date();
+      var spinnerTempate = '<div class="loading-container loader"><div class="loading"><img src="img/spinners/ripple-sm.svg"/></div></div>';
+      
+      $('body').append(spinnerTempate);
+      
       // config
       $scope.app = {
-        name: 'Angulr',
-        version: '1.3.3',
+        name: 'Pro-facture',
+        version: '1.0',
+        logo : 'img/ProFacture.png',
+        date : curdate,
+        api : 'http://localhost/PFE/pro-facture/api/',
         // for chart colors
         color: {
           primary: '#7266ba',
@@ -35,7 +43,11 @@ angular.module('app')
           asideFolded: false,
           asideDock: false,
           container: false
-        }
+        },
+        picture : $localStorage.userPicture,
+        userName : $localStorage.userName,
+        companyName : $localStorage.companyName,
+        login : $localStorage.login
       }
 
       // save settings to local storage

@@ -1,40 +1,27 @@
 <!-- list -->
 <ul class="nav">
   <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-    <span translate="aside.nav.HEADER">Navigation</span>
+    <span translate="aside.nav.HEADER">Menu de navigation</span>
   </li>
-  <li>
-    <a href class="auto">      
-      <span class="pull-right text-muted">
-        <i class="fa fa-fw fa-angle-right text"></i>
-        <i class="fa fa-fw fa-angle-down text-active"></i>
-      </span>
-      <i class="glyphicon glyphicon-stats icon text-primary-dker"></i>
-      <span class="font-bold" translate="aside.nav.DASHBOARD">Dashboard</span>
+    <li ui-sref-active="active">
+    <a ui-sref="app.dashboard">
+      <i class="fa fa-dashboard icon text-info-dker"></i>
+      <span class="font-bold" translate="">Tableau de bord</span>
     </a>
-    <ul class="nav nav-sub dk">
-      <li class="nav-sub-header">
-        <a href>
-          <span translate="aside.nav.DASHBOARD">Dashboard</span>
-        </a>
-      </li>
-      <li ui-sref-active="active">
-        <a ui-sref="app.dashboard-v1">
-          <span>Dashboard v1</span>
-        </a>
-      </li>
-      <li ui-sref-active="active">
-        <a ui-sref="app.dashboard-v2">
-          <b class="label bg-info pull-right">N</b>
-          <span>Dashboard v2</span>
-        </a>
-      </li>
-    </ul>
+  </li>
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span translate="">Gestion des contacts</span>
   </li>
   <li ui-sref-active="active">
-    <a ui-sref="app.calendar">
-      <i class="glyphicon glyphicon-calendar icon text-info-dker"></i>
-      <span class="font-bold" translate="aside.nav.CALENDAR">Calendar</span>
+    <a ui-sref="app.clients">
+      <i class="glyphicon glyphicon-user icon text-info-dker"></i>
+      <span class="font-bold" translate="">Clients</span>
+    </a>
+  </li>
+    <li ui-sref-active="active">
+    <a ui-sref="app.fournisseurs">
+      <i class="fa  fa-users icon text-info-dker"></i>
+      <span class="font-bold" translate="">Fournisseurs</span>
     </a>
   </li>
   <li ui-sref-active="active">
