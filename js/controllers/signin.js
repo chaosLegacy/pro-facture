@@ -7,16 +7,20 @@ app.controller('SigninFormController', ['$scope', 'ServiceUsers', '$state', '$ti
         $scope.authError = null;
         $scope.authSuccess = null;
 
-        $scope.$storage = $localStorage.$default({
+        var rootDir = $scope.app.rootDir;
+        $scope.app.user = {
             "idUser": "",
+            "idSociete": "",
             "login": "",
-            "accessToken": "",
             "lastLogin": "",
             "userName": "",
-            "companyName": "",
-            "userPicture": "",
-            "abonnement": ""
-        });
+            "societeName": "",
+            "picture": "",
+            "typeAbonnement": "",
+            "accessToken": "",
+            "api": "http://localhost/PFE/pro-facture/api/"
+        };
+
         (function initController() {
                         // reset login status
                         ServiceUsers.ClearCredentials();
@@ -26,32 +30,38 @@ app.controller('SigninFormController', ['$scope', 'ServiceUsers', '$state', '$ti
 
             if (form.$valid) {
                 ServiceUsers.getUser($scope.user).then(function (response) {
-                    debugger;
                     if (typeof response === 'object') {
-                        $localStorage.idUser = response.idUser;
-                        $localStorage.lastLogin = response.lastLogin;
-                        $localStorage.login = response.login;
-                        $localStorage.userPicture = response.photo;
-                        $localStorage.companyName = response.nomSoc;
-                        $localStorage.userName = response.nom + " " + response.prenom;
-                        if (response.lastLogin === null && response.active === 0) {
-                            $localStorage.userName = response.nomSoc;
+                        $scope.app.user.idUser = response.idUser;
+                        $scope.app.user.idSociete = response.idSociete;
+                        $scope.app.user.login = response.login;
+                        $scope.app.user.lastLogin = response.lastLogin;
+                        $scope.app.user.societeName = response.nomSoc;
+                        if (response.nom !== "" || response.prenom !== "") {
+                            $scope.app.user.userName = response.nom + " " + response.prenom;
+                        } else {
+                            $scope.app.user.userName = response.nomSoc;
                         }
-                        $localStorage.accessToken = response.accesToken;
-                        $localStorage.abonnement = 0;
-                        
+                        $scope.app.user.picture = response.photo;
+                        $scope.app.user.accessToken = response.accesToken;
+                        $scope.app.user.typeAbonnement = response.idabonnement;
+
                         ServiceUsers.SetCredentials(response.login, response.accesToken);
-                        console.log(response);
+
+                        if (response.lastLogin === null) {
+                            ServiceUsers.buildUserFolder(response.nomSoc, rootDir);
+                        }
+                        ServiceUsers.upadateUserStatus(response.idUser, 1);
+
                         $('.loader').addClass('visible');
                         $scope.authError = null;
                         $scope.authSuccess = 'Merci de patienter, vous allez etre rederiger dans quelque instant.';
+
                         $timeout(function () {
                             $('.loader').removeClass('visible');
                             $state.go('app.dashboard');
                         }, 3000);
                     } else {
                         $scope.authError = 'Une erreur est survenu : ' + response;
-                        console.log(response);
                     }
                 });
             } else {

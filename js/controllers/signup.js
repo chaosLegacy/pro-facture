@@ -13,7 +13,7 @@ app.controller('SignupFormController', ['$scope', 'ServiceUsers', '$state', '$fi
             return re.test(email);
         }
 
-        function checkData(validator) {debugger;
+        function checkData(validator) {
 
             if (validator.$error.required) {
                 return "le champ: <b>" + validator.$name + "</b> est <b>obligatoire</b>.<br/>";
@@ -37,7 +37,7 @@ app.controller('SignupFormController', ['$scope', 'ServiceUsers', '$state', '$fi
         }
 
         $scope.signup = function (form) {
-            debugger;
+            
             var msg = "";
 
             if (!form.$valid) {
@@ -47,7 +47,7 @@ app.controller('SignupFormController', ['$scope', 'ServiceUsers', '$state', '$fi
                     });
                 });
             }
-            if (msg != '') {
+            if (msg !== '') {
                 $scope.authError = msg;
             }
             else if (form.$valid) {
@@ -67,10 +67,11 @@ app.controller('SignupFormController', ['$scope', 'ServiceUsers', '$state', '$fi
                     }
                 };
                 ServiceUsers.addUser(data).then(function (response) {
-                    debugger;
+                    
                     if (typeof response === 'object') {
                         console.log(response);
                         $('.loader').addClass('visible');
+                        $scope.authError = null;
                         $scope.authSuccess = 'Merci de patienter, vous allez etre rederiger dans quelque instant.';
                         $timeout(function () {
                             $('.loader').removeClass('visible');

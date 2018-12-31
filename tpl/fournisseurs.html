@@ -1,13 +1,14 @@
 <div ng-controller="FournisseursController">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3"><i class="fa fa-users">&nbsp;</i>Liste de vos fournisseurs</h1>
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-record">&nbsp;</i>Liste de vos fournisseurs</h1>
         <nav class="m-t-n-lg pull-right">
             <button class="btn btn-sm btn-dark btn-addon" ng-click="addFournisseur()"><i class="fa fa-plus"></i>Ajouter un fournisseur</button>
         </nav>
     </div>
     <div class="wrapper-md">
-
-
+        <!-- toaster directive -->
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+        <!-- / toaster directive -->
         <div class="panel panel-default">
 
             <div class="row wrapper">
@@ -40,49 +41,47 @@
                                 </a>
                             </li>
                             <li>
-                                <a ng-click="orderBy('facture')">
-                                    <span>Facture </span>
-                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'facture', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'facture'}"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="orderBy('solde')">
-                                    <span>Solde </span>
-                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'solde', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'solde'}"></i>
+                                <a ng-click="orderBy('ville')">
+                                    <span>Ville </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'ville', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'ville'}"></i>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="responsive-table table-responsive">
-                <table class="table table-striped b-t b-light">
-                    <thead class="cf">
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light" data-ui-jq="footable" data-page-size="10">
+                    <thead>
                         <tr>
-                            <th style="width: 30%;">FOURNISSEUR</th>
-                            <th>FACTURE EN ATTENTE</th>
-                            <th>SOLDE COURANT</th>
+                            <th data-toggle="true" style="width: 30%;">FOURNISSEUR</th>
+                            <th data-hide="phone,tablet">ADRESSE</th>
+                            <th data-hide="phone">VILLE</th>
+                            <th data-hide="phone">TÉLÉPHONE</th>
                             <th class="text-center" width="100">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="fournisseur in ListeFournisseurs| filter:fournisseurFilter | orderBy: sort.label:reverse"
 
-                            ng-dblclick="selectFournisseur(fournisseur.reference)">
+                            ng-dblclick="selectFournisseur(fournisseur.idFournisseur)">
 
                             <td data-title="FOURNISSEUR">
                                 <h4>{{fournisseur.nom}}</h4><span class="text-muted">{{fournisseur.reference}}</span>
                             </td>
-                            <td data-title="FACTURE EN ATTENTE">
-                                <b>{{fournisseur.facture = 1}}</b>
-                                <span ng-show="fournisseur.facture > 1"> factures impayé</span>
-                                <span ng-show="fournisseur.facture == 1"> facture impayé</span>
+                            <td data-title="ADRESSE">
+                                <span>{{fournisseur.rue}}</span><br/>
+                                <span>{{fournisseur.codeP}}</span><br/>
+                                <span>{{fournisseur.pays}}</span>
                             </td>
-                            <td data-title="SOLDE COURANT" class="text-right">
-                                <span>{{fournisseur.solde}} 0 </span><b>$</b>
+                            <td data-title="VILLE">
+                                <span>{{fournisseur.ville}}</span>
+                            </td>
+                            <td data-title="TÉLÉPHONE">
+                                <span>{{fournisseur.tel}}</span>
                             </td>
                             <td data-title="ACTIONS" class="text-right">
-                                <select ng-model="action" ng-change="selectedAction(action, fournisseur.reference)">
+                                <select ng-model="action" ng-change="selectedAction(action, fournisseur.idFournisseur)">
                                     <option value="" selected>--Sélectionner une action--</option>
                                     <option value="selectFournisseur">Voir</option>
                                     <option value="updateFournisseur">Modifier</option>
@@ -91,32 +90,21 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot class="">
+                        <tr>
+                            <td colspan="3">
+                                <button class="btn btn-sm btn-dark btn-addon" ng-click="addFournisseur()"><i class="fa fa-plus"></i>Ajouter un fournisseur</button>
+                            </td>
+                            <td colspan="2" class="text-right">
+                                <ul class="pagination pagination-sm m-t-none m-b-none"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
                 <div class="text-center text-bold text-muted">
                     <div ng-show="ListeFournisseurs.length <= 0" >Vous n'avez aucun fournisseur pour le moment pensez d'ajouter un en cliquant sur la bouton <span class="text-green">Ajouter un fournisseur</span>.<hr/></div>
                 </div>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-4 hidden-xs">
-                        <button class="btn btn-sm btn-dark btn-addon" ng-click="addFournisseur()"><i class="fa fa-plus"></i>Ajouter un fournisseur</button>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-4 text-right text-center-xs">                
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-                            <li><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">4</a></li>
-                            <li><a href="">5</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
 </div>

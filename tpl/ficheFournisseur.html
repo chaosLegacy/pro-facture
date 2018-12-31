@@ -1,9 +1,9 @@
 <div ng-controller="GesFournisseursController">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-user">&nbsp;</i>Fiche fournisseur <label>: {{fournisseur.reference}}</label></h1>
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-record">&nbsp;</i>Fiche fournisseur <label>: {{fournisseur.reference}}</label></h1>
         <nav class="m-t-n-lg pull-right">
             <button class="btn btn-sm btn-default" ng-click="back()"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            <button class="btn btn-sm btn-dark btn-addon" ng-click="updateFournisseur(fournisseur.reference)"><i class="fa fa-edit"></i>Éditer</button>
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="updateFournisseur(fournisseur.idFournisseur)"><i class="fa fa-edit"></i>Éditer</button>
         </nav>
     </div>
     <div class="wrapper-md">

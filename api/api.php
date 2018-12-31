@@ -10,8 +10,8 @@ class API extends REST {
     public $data = "";
 
     const DB_SERVER = "localhost";
-    const DB_USER = "root";
-    const DB_PASSWORD = "root";
+    const DB_USER = "admin";
+    const DB_PASSWORD = "123456";
     const DB = "proFacture_db";
 
     protected $db = NULL;
@@ -24,7 +24,7 @@ class API extends REST {
     //Database connection
     private function dbConnect() {
         try {
-            $this->db = new PDO('mysql:host=' . self::DB_SERVER . ';dbname=' . self::DB, self::DB_USER, self::DB_PASSWORD);
+            $this->db = new PDO('mysql:host=' . self::DB_SERVER . ';dbname=' . self::DB.';charset=utf8', self::DB_USER, self::DB_PASSWORD);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         } catch (PDOException $e) {
@@ -42,7 +42,6 @@ class API extends REST {
         $isAuthorazed = false;
         $headers = apache_request_headers();
         if (isset($headers['Authorization'])) {
-            //echo $headers['Authorization'];
             $needle = ';';
             $auth = explode(' ', $headers['Authorization']);
             $key = $auth[0] . " ";
@@ -99,7 +98,7 @@ class API extends REST {
 
     protected function json($data) {
         if (is_array($data)) {
-            return json_encode($data);
+            return json_encode($data, JSON_UNESCAPED_UNICODE);
         }
     }
 

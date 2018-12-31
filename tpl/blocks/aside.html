@@ -6,22 +6,22 @@
     <!-- user -->
     <div class="clearfix hidden-xs text-center" id="aside-user">
       <div class="dropdown wrapper" dropdown>
-        <a ui-sref="app.page.profile">
+        <a data-ui-sref="app.page.profile">
           <span class="thumb-lg w-auto-folded avatar m-t-sm">
-            <img src="{{app.picture}}" class="img-full" alt="...">
+            <img src="{{app.user.picture}}" class="img-full" alt="...">
           </span>
         </a>
         <a href class="dropdown-toggle hidden-folded" dropdown-toggle>
           <span class="clear">
             <span class="block m-t-sm">
-              <strong class="font-bold text-lt">{{app.userName}}</strong> 
+              <strong class="font-bold text-lt">{{app.user.userName}}</strong> 
               <b class="caret"></b>
             </span>
             <span class="text-muted text-xs block">Directeur général</span>
           </span>
         </a>
         <!-- dropdown -->
-        <ul class="dropdown-menu animated fadeInRight w hidden-folded">
+        <ul class="dropdown-menu animated fadeInRight w hidden-folded" style="display: none">
           <li class="wrapper b-b m-b-sm bg-info m-t-n-xs">
             <span class="arrow top hidden-folded arrow-info"></span>
             <div>
@@ -30,10 +30,10 @@
             <progressbar value="60" type="white" class="progress-xs m-b-none dker"></progressbar>
           </li>
           <li>
-            <a href>Settings</a>
+            <a data-ui-sref="app.page.settings">Paramètres</a>
           </li>
           <li>
-            <a ui-sref="app.page.profile">Profile</a>
+            <a data-ui-sref="app.page.profile">Profile</a>
           </li>
           <li>
             <a href>
@@ -43,7 +43,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a ui-sref="access.signin">Logout</a>
+            <a data-ui-sref="access.signin">Logout</a>
           </li>
         </ul>
         <!-- / dropdown -->
@@ -56,7 +56,7 @@
     <nav ui-nav class="navi" ng-include="'tpl/blocks/nav.html'"></nav>
     <!-- nav -->
 
-    <!-- aside footer -->
+<!--     aside footer 
     <div class="wrapper m-t">
       <div class="text-center-folded">
         <span class="pull-right pull-none-folded">60%</span>
@@ -69,6 +69,6 @@
       </div>
       <progressbar value="35" class="progress-xxs m-t-sm dk" type="primary"></progressbar>
     </div>
-    <!-- / aside footer -->
+     / aside footer -->
   </div>
 </div>

@@ -4,7 +4,7 @@
 // users service
 angular.module('ServiceUsers', [])
         .service("ServiceUsers", ['$q', '$http', '$localStorage', '$rootScope', '$cookieStore', function ($q, $http, $localStorage, $rootScope, $cookieStore) {
-                var url = 'http://localhost/PFE/pro-facture/api/User/';
+                var url = $localStorage.user.api+'/User/';
 
                 this.getUser = function (user) {
                     var deferred = $q.defer();
@@ -19,16 +19,56 @@ angular.module('ServiceUsers', [])
                         timeout: 15000,
                         data: $.param({'data': data}),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    }).then(function successCallback(response) {debugger;
+                    }).then(function successCallback(response) {
                         deferred.resolve(response.data);
-                    }, function errorCallback(response) {debugger;
+                    }, function errorCallback(response) {
+                        deferred.resolve(response.data.msg);
+                    });
+                    return deferred.promise;
+                };
+
+                this.getInfoUser = function (idSoc, idUser) {
+                    var deferred = $q.defer();
+                    var data = {
+                        idSociete: idSoc,
+                        idUser: idUser,
+                    };
+
+                    $http({
+                        method: 'POST',
+                        url: url + 'GetInfoUser',
+                        timeout: 15000,
+                        data: $.param({'data': data}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response.data);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response.data.msg);
+                    });
+                    return deferred.promise;
+                };
+
+                this.getSubusers = function (idSoc) {
+                    var deferred = $q.defer();
+                    var data = {
+                        idSociete: idSoc
+                    };
+
+                    $http({
+                        method: 'POST',
+                        url: url + 'GetAllSubusers',
+                        timeout: 15000,
+                        data: $.param({'data': data}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response.data);
+                    }, function errorCallback(response) {
                         deferred.resolve(response.data.msg);
                     });
                     return deferred.promise;
                 };
 
                 this.addUser = function (user) {
-                    debugger;
                     var deferred = $q.defer();
                     $http({
                         method: 'POST',
@@ -37,27 +77,144 @@ angular.module('ServiceUsers', [])
                         data: $.param({'data': user}),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).then(function successCallback(response) {
-                        debugger;
                         deferred.resolve(response.data);
                     }, function errorCallback(response) {
-                        debugger;
                         deferred.resolve(response.data.msg);
                     });
                     return deferred.promise;
                 };
 
+                this.saveSubUser = function (subUser) {
+                    var deferred = $q.defer();
+
+                    if (subUser.oper === 1) {
+                        $http({
+                            method: 'POST',
+                            url: url + 'InsertSubUser',
+                            timeout: 15000,
+                            data: $.param({'data': subUser}),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                        }).then(function successCallback(response) {
+                            deferred.resolve(response.data);
+                        }, function errorCallback(response) {
+                            deferred.resolve(response.data.msg);
+                        });
+                    } else {
+                        $http({
+                            method: 'POST',
+                            url: url + 'UpdateSubUser',
+                            timeout: 15000,
+                            data: $.param({'data': subUser}),
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                        }).then(function successCallback(response) {
+                            deferred.resolve(response.data);
+                        }, function errorCallback(response) {
+                            deferred.resolve(response.data.msg);
+                        });
+                    }
+                    return deferred.promise;
+                };
+
+                this.updateUser = function (user) {
+                    var deferred = $q.defer();
+                    $http({
+                        method: 'POST',
+                        url: url + 'UpdateUser',
+                        timeout: 15000,
+                        data: $.param({'data': user}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response.data);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response.data.msg);
+                    });
+                    return deferred.promise;
+                };
+
+                this.updateUserMdp = function (user) {
+                    var deferred = $q.defer();
+                    $http({
+                        method: 'POST',
+                        url: url + 'UpdateUserMdp',
+                        timeout: 15000,
+                        data: $.param({'data': user}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response.data);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response);
+                    });
+                    return deferred.promise;
+                };
+
+                this.buildUserFolder = function (nomSociete, rootDir) {
+                    var deferred = $q.defer();
+                    var data = {
+                        nomSociete: nomSociete,
+                        rootDir: rootDir
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'js/services/buildDirs.php',
+                        timeout: 15000,
+                        data: $.param({'data': data}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response);
+                    });
+                    return deferred.promise;
+                };
+
+                this.upadateUserStatus = function (idUser, status) {
+                    var deferred = $q.defer();
+                    var data = {
+                        idUser: idUser,
+                        status: status
+                    };
+                    $http({
+                        method: 'POST',
+                        url: url + 'UpdatedUserStatus',
+                        timeout: 15000,
+                        data: $.param({'data': data}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response);
+                    });
+                    return deferred.promise;
+                };
+
+                this.deleteUser = function (idUser) {
+                    var deferred = $q.defer();
+                    var data = {
+                        idUser: idUser
+                    };
+                    $http({
+                        method: 'POST',
+                        url: url + 'DeleteUser',
+                        timeout: 15000,
+                        data: $.param({'data': data}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response.data);
+                    });
+                    return deferred.promise;
+                };
+
+
                 this.SetCredentials = function (login, token) {
-                    /*
-                    var authdata = Base64.encode(user.login + ':' + user.password);
-                    */
                     $rootScope.globals = {
                         currentUser: {
                             username: login,
                             authdata: token
                         }
                     };
-                    
-                    //$http.defaults.headers.common['Authorization'] = 'Basic ' + token; // jshint ignore:line
+                    $http.defaults.headers.common['Authorization'] = 'Basic ' + token;
                     $cookieStore.put('globals', $rootScope.globals);
                 };
 
@@ -66,85 +223,5 @@ angular.module('ServiceUsers', [])
                     $cookieStore.remove('globals');
                     $http.defaults.headers.common.Authorization = 'Basic';
                 };
-
-                // Base64 encoding service used by AuthenticationService
-                var Base64 = {
-                    keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-                    encode: function (input) {
-                        var output = "";
-                        var chr1, chr2, chr3 = "";
-                        var enc1, enc2, enc3, enc4 = "";
-                        var i = 0;
-
-                        do {
-                            chr1 = input.charCodeAt(i++);
-                            chr2 = input.charCodeAt(i++);
-                            chr3 = input.charCodeAt(i++);
-
-                            enc1 = chr1 >> 2;
-                            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                            enc4 = chr3 & 63;
-
-                            if (isNaN(chr2)) {
-                                enc3 = enc4 = 64;
-                            } else if (isNaN(chr3)) {
-                                enc4 = 64;
-                            }
-
-                            output = output +
-                                    this.keyStr.charAt(enc1) +
-                                    this.keyStr.charAt(enc2) +
-                                    this.keyStr.charAt(enc3) +
-                                    this.keyStr.charAt(enc4);
-                            chr1 = chr2 = chr3 = "";
-                            enc1 = enc2 = enc3 = enc4 = "";
-                        } while (i < input.length);
-
-                        return output;
-                    },
-                    decode: function (input) {
-                        var output = "";
-                        var chr1, chr2, chr3 = "";
-                        var enc1, enc2, enc3, enc4 = "";
-                        var i = 0;
-
-                        // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-                        var base64test = /[^A-Za-z0-9\+\/\=]/g;
-                        if (base64test.exec(input)) {
-                            window.alert("There were invalid base64 characters in the input text.\n" +
-                                    "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-                                    "Expect errors in decoding.");
-                        }
-                        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-                        do {
-                            enc1 = this.keyStr.indexOf(input.charAt(i++));
-                            enc2 = this.keyStr.indexOf(input.charAt(i++));
-                            enc3 = this.keyStr.indexOf(input.charAt(i++));
-                            enc4 = this.keyStr.indexOf(input.charAt(i++));
-
-                            chr1 = (enc1 << 2) | (enc2 >> 4);
-                            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-                            chr3 = ((enc3 & 3) << 6) | enc4;
-
-                            output = output + String.fromCharCode(chr1);
-
-                            if (enc3 != 64) {
-                                output = output + String.fromCharCode(chr2);
-                            }
-                            if (enc4 != 64) {
-                                output = output + String.fromCharCode(chr3);
-                            }
-
-                            chr1 = chr2 = chr3 = "";
-                            enc1 = enc2 = enc3 = enc4 = "";
-
-                        } while (i < input.length);
-
-                        return output;
-                    }
-                };
-
 
             }]);

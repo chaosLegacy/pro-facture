@@ -1,12 +1,14 @@
 <div ng-controller="ClientsController">
     <div class="bg-light lter b-b wrapper-md">
-        <h1 class="m-n font-thin h3"><i class="fa fa-users">&nbsp;</i>Liste de vos clients</h1>
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-user">&nbsp;</i>Liste de vos clients</h1>
         <nav class="m-t-n-lg pull-right">
             <button class="btn btn-sm btn-dark btn-addon" ng-click="addClient()"><i class="fa fa-plus"></i>Ajouter un client</button>
         </nav>
     </div>
     <div class="wrapper-md">
-
+        <!-- toaster directive -->
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+        <!-- / toaster directive -->
 
         <div class="panel panel-default">
 
@@ -40,49 +42,47 @@
                                 </a>
                             </li>
                             <li>
-                                <a ng-click="orderBy('facture')">
-                                    <span>Facture </span>
-                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'facture', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'facture'}"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click="orderBy('solde')">
-                                    <span>Solde </span>
-                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'solde', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'solde'}"></i>
+                                <a ng-click="orderBy('villeF')">
+                                    <span>VILLE </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'villeF', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'villeF'}"></i>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="responsive-table table-responsive">
-                <table class="table table-striped b-t b-light">
-                    <thead class="cf">
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light" data-ui-jq="footable" data-page-size="10">
+                    <thead>
                         <tr>
-                            <th style="width: 30%;">CLIENT</th>
-                            <th>FACTURE EN ATTENTE</th>
-                            <th>SOLDE COURANT</th>
+                            <th data-toggle="true" style="width: 30%">CLIENT</th>
+                            <th data-hide="phone,tablet">ADRESSE</th>
+                            <th data-hide="phone">VILLE</th>
+                            <th data-hide="phone">TÉLÉPHONE</th>
                             <th class="text-center" width="100">ACTIONS</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="client in ListeClients| filter:clientFilter | orderBy: sort.label:reverse"
 
-                            ng-dblclick="selectClient(client.reference)">
+                            ng-dblclick="selectClient(client.idClient)">
 
                             <td data-title="CLIENT">
                                 <h4>{{client.nom}}</h4><span class="text-muted">{{client.reference}}</span>
                             </td>
-                            <td data-title="FACTURE EN ATTENTE">
-                                <b>{{client.facture = 1}}</b>
-                                <span ng-show="client.facture > 1"> factures impayé</span>
-                                <span ng-show="client.facture == 1"> facture impayé</span>
+                            <td data-title="ADRESSE">
+                                <span>{{client.rueF}}</span><br/>
+                                <span>{{client.codePF}}</span><br/>
+                                <span>{{client.paysF}}</span>
                             </td>
-                            <td data-title="SOLDE COURANT" class="text-right">
-                                <span>{{client.solde}} 0 </span><b>$</b>
+                            <td data-title="VILLE">
+                                <span>{{client.villeF}}</span>
+                            </td>
+                            <td data-title="TÉLÉPHONE">
+                                <span>{{client.tel}}</span>
                             </td>
                             <td data-title="ACTIONS" class="text-right">
-                                <select ng-model="action" ng-change="selectedAction(action, client.reference)">
+                                <select ng-model="action" ng-change="selectedAction(action, client.idClient)">
                                     <option value="" selected>--Sélectionner une action--</option>
                                     <option value="selectClient">Voir</option>
                                     <option value="updateClient">Modifier</option>
@@ -91,32 +91,21 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot class="">
+                        <tr>
+                            <td colspan="3">
+                                <button class="btn btn-sm btn-dark btn-addon" ng-click="addClient()"><i class="fa fa-plus"></i>Ajouter un client</button>
+                            </td>
+                            <td colspan="2" class="text-right">
+                                <ul class="pagination pagination-sm m-t-none m-b-none"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
                 <div class="text-center text-bold text-muted">
                     <div ng-show="ListeClients.length <= 0" >Vous n'avez aucun client pour le moment pensez d'ajouter un en cliquant sur la bouton <span class="text-green">Ajouter un client</span>.<hr/></div>
                 </div>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-4 hidden-xs">
-                        <button class="btn btn-sm btn-dark btn-addon" ng-click="addClient()"><i class="fa fa-plus"></i>Ajouter un client</button>
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-4 text-right text-center-xs">                
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-                            <li><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">4</a></li>
-                            <li><a href="">5</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
 </div>

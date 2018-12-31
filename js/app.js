@@ -8,6 +8,8 @@ angular.module('app', [
     'ngSanitize',
     'ngTouch',
     'ngStorage',
+    'ngNumeraljs',
+    'ngIdle',
     'ui.router',
     'ui.bootstrap',
     'ui.load',

@@ -20,8 +20,8 @@ angular.module('app')
         name: 'Pro-facture',
         version: '1.0',
         logo : 'img/ProFacture.png',
+        rootDir: '/PFE/pro-facture/',
         date : curdate,
-        api : 'http://localhost/PFE/pro-facture/api/',
         // for chart colors
         color: {
           primary: '#7266ba',
@@ -44,18 +44,62 @@ angular.module('app')
           asideDock: false,
           container: false
         },
-        picture : $localStorage.userPicture,
-        userName : $localStorage.userName,
-        companyName : $localStorage.companyName,
-        login : $localStorage.login
+        user: {
+           idUser: "",
+           idSociete: "",
+           login: "",
+           lastLogin: "",
+           userName: "",
+           societeName: "",
+           picture: "",
+           typeAbonnement: "",
+           accessToken: "",
+           api : ""
+        },
+        abonnements: {
+            standardType: 0,
+            businessType: 1,
+            premiumType: 2,
+            standard: {
+                maxClientsCount: 2,
+                maxFournisseursCount: 2,
+                maxCommandesCount: 10,
+                maxFacturesCount: 5
+            },
+            business: {
+                maxClientsCount: 30,
+                maxFournisseursCount: 50,
+                maxCommandesCount: 70,
+                maxFacturesCount: 5
+            },
+            premium: {
+                maxClientsCount: Number.MAX_SAFE_INTEGER,
+                maxFournisseursCount: Number.MAX_SAFE_INTEGER,
+                maxCommandesCount: Number.MAX_SAFE_INTEGER,
+                maxFacturesCount: Number.MAX_SAFE_INTEGER
+            }
+        }
+        
+      };
+      // save user to local storage
+     if ( angular.isDefined($localStorage.user) ) {
+        $scope.app.user = $localStorage.user;
+      } else {
+        $localStorage.user = $scope.app.user;
       }
-
+      
+      $scope.$watch('app.user', function(){
+        // save to local storage
+        $localStorage.user = $scope.app.user;
+      }, true);
+      
       // save settings to local storage
       if ( angular.isDefined($localStorage.settings) ) {
         $scope.app.settings = $localStorage.settings;
       } else {
         $localStorage.settings = $scope.app.settings;
       }
+      
       $scope.$watch('app.settings', function(){
         if( $scope.app.settings.asideDock  &&  $scope.app.settings.asideFixed ){
           // aside dock and fixed must set the header fixed.

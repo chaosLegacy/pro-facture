@@ -5,36 +5,68 @@ class Client extends API {
     public function __construct() {
         parent::__construct($this->db);    // Init parent contructor
     }
-
-    public function valid_token($token) {
-        $sql = $this->db->query("SELECT * FROM access_token WHERE token = :token");
-        $sql->bindParam('token', $token, PDO::PARAM_STR);
-        if ($sql->rowCount() > 0) {
-            $result = $sql->fetch();
-            
-            return 1;
-        }
-        else {
-            return 0;
-        }
-    }
-
-    public function GetAllClients() {
+    public function CountClient() {
         // Cross validation if the request method is POST else it will return "Not Acceptable" status
-        if ($this->get_request_method() != "GET") {
+        if ($this->get_request_method() != "POST") {
             $this->response('', 406);
         }
 
-        $sql = $this->db->query("SELECT * FROM client");
-        if ($sql->rowCount() > 0) {
-            $result = array();
-            while ($rlt = $sql->fetchAll()) {
-                $result[] = $rlt;
+        if (isset($_REQUEST['data'])) {
+            $idSociete = $_REQUEST['data']["idSociete"];
+            // Input validations
+            if (!empty($idSociete)) {
+                try {
+                    $sql = $this->db->prepare("SELECT COUNT(idClient) as countClient FROM client WHERE idSociete = :idSociete");
+                    $sql->bindParam('idSociete', $idSociete, PDO::PARAM_INT);
+                    $sql->execute();
+
+                    if ($sql->rowCount() > 0) {
+                        $result = $sql->fetch();
+
+                        // If success everythig is good send header as "OK" and user details
+                        $this->response($this->json($result), 200);
+                    }
+                    $this->response('', 204); // If no records "No Content" status
+                } catch (Exception $ex) {
+                    $this->response('', $ex->getMessage());
+                }
             }
-            // If success everythig is good send header as "OK" and return list of users in JSON format
-            $this->response($this->json($result), 200);
         }
-        $this->response('', 204); // If no records "No Content" status
+
+        // If invalid inputs "Bad Request" status message and reason
+        $error = array('status' => "Failed", "msg" => "Invalid param");
+        $this->response($this->json($error), 400);
+    }
+    
+    public function GetAllClients() {
+        // Cross validation if the request method is POST else it will return "Not Acceptable" status
+        if ($this->get_request_method() != "POST") {
+            $this->response('', 406);
+        }
+        if (isset($_REQUEST['data'])) {
+            $idSociete = $_REQUEST['data']["idSociete"];
+            // Input validations
+            if (!empty($idSociete)) {
+                try {
+                    $sql = $this->db->prepare("SELECT c.*, s.idSociete FROM client c left join societe s on c.idSociete = s.idSociete WHERE s.idSociete = :idSociete");
+                    $sql->bindParam('idSociete', $idSociete, PDO::PARAM_INT);
+                    $sql->execute();
+                    
+                    if ($sql->rowCount() > 0) {
+                        $result = array();
+                        while ($rlt = $sql->fetchAll()) {
+                            $result[] = $rlt;
+                        }
+                        
+                        // If success everythig is good send header as "OK" and return list of users in JSON format
+                        $this->response($this->json($result[0]), 200);
+                    }
+                    $this->response('', 204); // If no records "No Content" status
+                } catch (Exception $ex) {
+                    $this->response('', $ex->getMessage()); 
+                }
+            }
+        }
     }
 
     public function GetClient() {
@@ -44,17 +76,24 @@ class Client extends API {
         }
 
         if (isset($_REQUEST['data'])) {
-            $reference = $_REQUEST['data']["reference"];
+            $idClient = $_REQUEST['data']["idClient"];
             // Input validations
-            if (!empty($reference)) {
-                $sql = $this->db->query("SELECT * FROM client WHERE reference = '$reference' LIMIT 1");
-                if ($sql->rowCount() > 0) {
-                    $result = $sql->fetch();
+            if (!empty($idClient)) {
+                try {
+                    $sql = $this->db->prepare("SELECT * FROM client WHERE idClient = :idClient LIMIT 1");
+                    $sql->bindParam('idClient', $idClient, PDO::PARAM_INT);
+                    $sql->execute();
+                    
+                    if ($sql->rowCount() > 0) {
+                        $result = $sql->fetch();
 
-                    // If success everythig is good send header as "OK" and user details
-                    $this->response($this->json($result), 200);
+                        // If success everythig is good send header as "OK" and user details
+                        $this->response($this->json($result), 200);
+                    }
+                    $this->response('', 204); // If no records "No Content" status
+                } catch (Exception $ex) {
+                    $this->response('', $ex->getMessage()); 
                 }
-                $this->response('', 204); // If no records "No Content" status
             }
         }
 
@@ -70,7 +109,7 @@ class Client extends API {
         }
 
         if (isset($_REQUEST['data'])) {
-            $idClient = $_REQUEST['data']['idClient'];
+            $idSociete = $_REQUEST['data']['idSociete'];
             $reference = $_REQUEST['data']['reference'];
             $nom = $_REQUEST['data']['nom'];
             $idType = $_REQUEST['data']['idType'];
@@ -87,16 +126,17 @@ class Client extends API {
             $paysL = $_REQUEST['data']['paysL'];
 
             // Input validations
-            if (!empty($idClient) && !empty($reference)) {
+            if (!empty($reference)) {
 
                 try {
-                    $sql = $this->db->prepare("INSERT INTO client (idClient, idType, reference, nom, tel, fax, email, rueL,"
-                            . " villeL, paysL, codePL, rueF, villeF, paysF, codePF, photo)"
-                            . "VALUES(:idClient, :idType, :reference, :nom, :tel, :fax, :email, :rueL, :villeL, :paysL, :codePL,"
-                            . ":rueF, :villeF, :paysF, :codePF, '')");
+                    $sql = $this->db->prepare("INSERT INTO client (idType, reference, nom, tel, fax, email, rueL,"
+                            . " villeL, paysL, codePL, rueF, villeF, paysF, codePF, idSociete)"
+                            . "VALUES(:idType, :reference, :nom, :tel, :fax, :email, :rueL, :villeL, :paysL, :codePL,"
+                            . ":rueF, :villeF, :paysF, :codePF, :idSociete)");
 
-                    $sql->bindParam('idClient', $idClient, PDO::PARAM_STR);
-                    $sql->bindParam('idType', $idType, PDO::PARAM_STR);
+                    
+                    //$sql->bindParam('idClient', $idClient, PDO::PARAM_STR);
+                    $sql->bindParam('idType', $idType, PDO::PARAM_INT);
                     $sql->bindParam('reference', $reference, PDO::PARAM_STR);
                     $sql->bindParam('nom', $nom, PDO::PARAM_STR);
                     $sql->bindParam('tel', $tel, PDO::PARAM_STR);
@@ -110,6 +150,7 @@ class Client extends API {
                     $sql->bindParam('villeF', $villeF, PDO::PARAM_STR);
                     $sql->bindParam('paysF', $paysF, PDO::PARAM_STR);
                     $sql->bindParam('codePF', $codePF, PDO::PARAM_STR);
+                    $sql->bindParam('idSociete', $idSociete, PDO::PARAM_STR);
 
                     $sql->execute();
 
@@ -156,8 +197,8 @@ class Client extends API {
 
                 try {
                     $sql = $this->db->prepare("UPDATE client SET idType = :idType , nom = :nom, tel = :tel, fax = :fax, email = :email, rueL = :rueL,"
-                            . " villeL = :villeL, paysL = :paysL, codePL = :codePL , rueF = :rueF, villeF = :villeF, paysF = :paysF, codePF = :codePF, photo = '' "
-                            . "WHERE reference = :reference");
+                            . " villeL = :villeL, paysL = :paysL, codePL = :codePL , rueF = :rueF, villeF = :villeF, paysF = :paysF, codePF = :codePF "
+                            . "WHERE idClient = :idClient");
 
                     $sql->bindParam('idType', $idType, PDO::PARAM_STR);
                     $sql->bindParam('nom', $nom, PDO::PARAM_STR);
@@ -172,7 +213,7 @@ class Client extends API {
                     $sql->bindParam('villeF', $villeF, PDO::PARAM_STR);
                     $sql->bindParam('paysF', $paysF, PDO::PARAM_STR);
                     $sql->bindParam('codePF', $codePF, PDO::PARAM_STR);
-                    $sql->bindParam('reference', $reference, PDO::PARAM_STR);
+                    $sql->bindParam('idClient', $idClient, PDO::PARAM_INT);
 
                     $sql->execute();
 
@@ -198,18 +239,24 @@ class Client extends API {
         }
 
         if (isset($_REQUEST['data'])) {
-            $reference = $_REQUEST['data']['reference'];
+            $idClient = $_REQUEST['data']['idClient'];
 
             try {
-                $sql = $this->db->prepare("DELETE FROM client WHERE reference = :reference ");
-                $sql->bindParam('reference', $reference, PDO::PARAM_STR);
+                $sql = $this->db->prepare("DELETE FROM client WHERE idClient = :idClient ");
+                $sql->bindParam('idClient', $idClient, PDO::PARAM_STR);
                 $sql->execute();
                 if ($sql) {
                     $success = array('status' => "Success", "msg" => "Successfully one record deleted.");
                     $this->response($this->json($success), 200);
                 }
             } catch (Exception $ex) {
-                $this->response('', $ex->getMessage()); // If no records "No Content" status
+                if ($ex->getCode() === '23000') {
+                    $error = array('status' => "Failed", "msg" => "Impossible de supprimer ce client");
+                    $this->response($this->json($error), 400);
+                } else {
+                  $error = array('status' => "Failed", "msg" => $ex->getMessage());
+                  $this->response($this->json($error), 400);
+                }
             }
         }
     }

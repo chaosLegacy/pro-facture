@@ -4,14 +4,37 @@
 // clients service
 angular.module('ServiceFournisseurs', [])
         .service("ServiceFournisseurs", ['$q', '$http', '$localStorage', function ($q, $http, $localStorage) {
-                var url = 'http://localhost/PFE/pro-facture/api/Fournisseur/';
-
-                this.getListeFouenisseurs = function () {
+                var url = $localStorage.user.api+'/Fournisseur/';
+                
+                this.countFournisseur = function (idSoc) {
                     var deferred = $q.defer();
+                    var data = {
+                        idSociete: idSoc
+                    };
                     $http({
-                        method: 'GET',
+                        method: 'POST',
+                        url: url + 'CountFournisseur',
+                        timeout: 15000,
+                        data: $.param({'data': data}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    }).then(function successCallback(response) {
+                        deferred.resolve(response.data);
+                    }, function errorCallback(response) {
+                        deferred.resolve(response.statusText);
+                    });
+                    return deferred.promise;
+                };
+                
+                this.getListeFouenisseurs = function (idSoc) {
+                    var deferred = $q.defer();
+                    var data = {
+                        idSociete: idSoc
+                    };
+                    $http({
+                        method: 'POST',
                         url: url + 'GetAllFournisseurs',
                         timeout: 15000,
+                        data: $.param({'data': data}),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).then(function successCallback(response) {
                         deferred.resolve(response.data[0]);
@@ -21,10 +44,10 @@ angular.module('ServiceFournisseurs', [])
                     return deferred.promise;
                 };
 
-                this.getFournisseur = function (refFour) {
+                this.getFournisseur = function (idFour) {
                     var deferred = $q.defer();
                     var data = {
-                        reference: refFour
+                        idFournisseur: idFour
                     };
                     $http({
                         method: 'POST',
@@ -43,9 +66,7 @@ angular.module('ServiceFournisseurs', [])
                 this.saveFournisseur = function (fournisseur) {
                     var deferred = $q.defer();
                     
-                    if (fournisseur.Oper === 1) {
-                        fournisseur.idFournisseur = $localStorage.idUser + (Date.now() + "").substring(4, 15);
-                        
+                    if (fournisseur.Oper === 1) {                        
                         $http({
                             method: 'POST',
                             url: url + 'InsertFournisseur',
@@ -60,29 +81,25 @@ angular.module('ServiceFournisseurs', [])
                             deferred.resolve(response.statusText);
                         });
                     } else {
-                        fournisseur.idUser = $localStorage.idUser;
                         $http({
                             method: 'POST',
                             url: url + 'UpdateFournisseur',
                             timeout: 15000,
                             data: $.param({'data': fournisseur}),
                             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                        }).then(function successCallback(response) {debugger;
-                            var object = angular.fromJson(response.data);
-                            console.log(object);
-                            deferred.resolve(object);
-                        }, function errorCallback(response) {debugger;
-                            console.log(response);
+                        }).then(function successCallback(response) {
+                            deferred.resolve(response.data);
+                        }, function errorCallback(response) {
                             deferred.resolve(response.statusText);
                         });
                     }
                     return deferred.promise;
                 };
                 
-                this.deleteFournisseur = function (refFour) {
+                this.deleteFournisseur = function (idFour) {
                     var deferred = $q.defer();
                     var data = {
-                        reference: refFour
+                        idFournisseur: idFour
                     };
                     $http({
                         method: 'POST',
@@ -92,10 +109,8 @@ angular.module('ServiceFournisseurs', [])
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     }).then(function successCallback(response) {
                         deferred.resolve(response);
-                        console.log(response);
                     }, function errorCallback(response) {
-                        deferred.resolve(response.statusText);
-                        console.log(response);
+                        deferred.resolve(response.data);
                     });
                     return deferred.promise;
                 };

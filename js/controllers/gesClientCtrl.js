@@ -2,12 +2,14 @@
 
 /* Controllers */
 // gestion client controller
-app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$stateParams', '$timeout', '$localStorage', 'toaster', function ($scope, ServiceClients, $state, $stateParams, $timeout, $localStorage, toaster) {
-
+app.controller('GesClientsController', ['$scope', 'ServiceClients', 'ServiceHistorique', '$state', '$stateParams', '$timeout', '$localStorage', 'toaster', function ($scope, ServiceClients, ServiceHistorique, $state, $stateParams, $timeout, $localStorage, toaster) {
+        var idSociete = $scope.app.user.idSociete;
+        var typeAbonement = $scope.app.user.typeAbonnement;
+        var myAbonnement = abonnementChecker(typeAbonement);
         function viderChampsClient() {
             $scope.client = {
                 idClient: "",
-                reference: "CL-" + $localStorage.idUser + (Date.now() + "").substring(4, 15),
+                reference: "CL-" + $scope.app.user.idUser + (Date.now() + "").substring(4, 15),
                 nom: "",
                 idType: 0,
                 type: getTypeClient(0),
@@ -25,10 +27,24 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
                 Oper: 1
             };
         }
-
-        function getClient(refCli) {
-            if ((refCli != "") && (typeof refCli != 'undefined')) {
-                ServiceClients.getClient(refCli).then(function (data) {
+        function abonnementChecker(type) {
+            var abonnement = null;
+            switch (type) {
+                case 0:
+                    abonnement = $scope.app.abonnements.standard;
+                    break;
+                case 1:
+                    abonnement = $scope.app.abonnements.business;
+                    break;
+                case 2:
+                    abonnement = $scope.app.abonnements.premium;
+                    break;
+            }
+            return abonnement;
+        }
+        function getClient(idCli) {
+            if ((idCli !== "") && (typeof idCli !== 'undefined')) {
+                ServiceClients.getClient(idCli).then(function (data) {
                     $scope.client = {
                         "reference": data.reference,
                         "idClient": data.idClient,
@@ -69,10 +85,10 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
         }
 
         $scope.ListeTypes = [
-            {idType:0, label:'Sociéte'},
-            {idType:1, label:'Particulies'}
+            {idType: 0, label: 'Sociéte'},
+            {idType: 1, label: 'Particulies'}
         ];
-        
+
         function validateEmail(email) {
             var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
@@ -88,8 +104,8 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
         }
 
         function checkData() {
-            if ($scope.client.Oper == 1) {
-                if ($scope.client.reference == '') {
+            if ($scope.client.Oper === 1) {
+                if ($scope.client.reference === '') {
                     return 'Réference client obligatoire';
                 }
                 if ($scope.client.reference.length >= 30) {
@@ -97,29 +113,29 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
                 }
             }
 
-            if ($scope.client.nom == '') {
+            if ($scope.client.nom === '') {
                 return 'Nom client obligatoire';
             } else if ($scope.client.nom.length >= 100) {
                 return 'Nom Maximum 100 char';
             } else {
                 var vrfNom = new RegExp("^[a-zA-Z0-9 ]+$", "g");
                 if (!vrfNom.test($scope.client.nom)) {
-                    return "Le nom doit contient seulement des caractères alpha-numérique ";
+                    return "Le nom doit contenir seulement des caractères alpha-numérique ";
                 }
             }
-            if ($scope.client.tel != '') {
+            if ($scope.client.tel !== '') {
 
                 if ($scope.client.tel.length >= 30) {
                     return 'Telephone Maximum 30 char';
                 }
             }
-            if ($scope.client.fax != '') {
+            if ($scope.client.fax !== '') {
 
                 if ($scope.client.fax.length >= 30) {
                     return 'Fax Maximum 30 char';
                 }
             }
-            if ($scope.client.email != '') {
+            if ($scope.client.email !== '') {
 
                 if (!validateEmail($scope.client.email))
                 {
@@ -128,25 +144,25 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
             }
             // Adresse Facturation VAlidation
 
-            if ($scope.client.rueF != '') {
+            if ($scope.client.rueF !== '') {
 
                 if ($scope.client.rueF.length >= 50) {
                     return 'Rue Maximum 50 char';
                 }
             }
-            if ($scope.client.villeF != '') {
+            if ($scope.client.villeF !== '') {
 
                 if ($scope.client.villeF.length >= 30) {
                     return 'Ville Maximum 30 char';
                 }
             }
-            if ($scope.client.codePF != '') {
+            if ($scope.client.codePF !== '') {
 
                 if ($scope.client.codePF.length >= 20) {
                     return 'Code postal Maximum 20 char';
                 }
             }
-            if ($scope.client.paysF != '') {
+            if ($scope.client.paysF !== '') {
 
                 if ($scope.client.paysF.length >= 30) {
                     return 'Pays Maximum 30 char';
@@ -154,25 +170,25 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
             }
             // Adresse Livraison VAlidation
 
-            if ($scope.client.rueL != '') {
+            if ($scope.client.rueL !== '') {
 
                 if ($scope.client.rueL.length >= 50) {
                     return 'Rue Maximum 50 char';
                 }
             }
-            if ($scope.client.villeL != '') {
+            if ($scope.client.villeL !== '') {
 
                 if ($scope.client.villeL.length >= 30) {
                     return 'Ville Maximum 30 char';
                 }
             }
-            if ($scope.client.codePL != '') {
+            if ($scope.client.codePL !== '') {
 
                 if ($scope.client.codePL.length >= 20) {
                     return 'Code postal Maximum 20 char';
                 }
             }
-            if ($scope.client.paysL != '') {
+            if ($scope.client.paysL !== '') {
 
                 if ($scope.client.paysL.length >= 30) {
                     return 'Pays Maximum 30 char';
@@ -184,9 +200,24 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
 
         }
 
-        if (typeof $stateParams.refCli != 'undefined' && $stateParams.refCli != '') {
+        function interactHisto(idObjet, typeHisto, typeAction, data) {
+            var datAuj = new Date();
+            var today = Date.parse(datAuj);
+            var historique = {
+                idSociete: idSociete,
+                idUser: $scope.app.user.idUser,
+                idObjet: idObjet,
+                typeHisto: typeHisto,
+                typeAction: typeAction,
+                data: data,
+                dateAction: today
+            };
+            ServiceHistorique.saveHistorique(historique);
+        }
+
+        if (typeof $stateParams.idCli !== 'undefined' && $stateParams.idCli !== '') {
             viderChampsClient();
-            getClient($stateParams.refCli);
+            getClient($stateParams.idCli);
         } else {
             viderChampsClient();
         }
@@ -208,9 +239,9 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
             var link = "mailto:" + email;
             window.open('mailto:' + email, '_system');
         };
-        
-        $scope.updateClient = function (refCli) {
-            $state.go('app.gesClient', {refCli: refCli});
+
+        $scope.updateClient = function (idCli) {
+            $state.go('app.gesClient', {idCli: idCli});
         };
 
         $scope.toggleDeliveryAdd = function () {
@@ -233,46 +264,35 @@ app.controller('GesClientsController', ['$scope', 'ServiceClients', '$state', '$
         };
 
         $scope.saveClient = function () {
+            ServiceClients.countClient(idSociete).then(function (data) {
+                if (data.countClient >= myAbonnement.maxClientsCount && $scope.client.Oper === 1) {
+                    notifyBox("Erreur", "Vous avez atteint la limite de " + myAbonnement.maxClientsCount + " fiches clients.\n Abonnez vous pour enlever cette limite.", 'warning');
+                } else {
+                    var msg = checkData();
+                    if (msg !== '') {
+                        notifyBox('Erreur', msg, 'error');
+                    } 
+                    else {
+                        $scope.client.idSociete = idSociete;
+                        ServiceClients.saveClient($scope.client).then(function () {
 
-            var msg = checkData();
+                            if ($scope.client.Oper === 1) {
+                                interactHisto($scope.client.nom, 'client', 0, '');
+                            } else {
+                                interactHisto($scope.client.nom, 'client', 1, '');
+                            }
+                            notifyBox('Succès', 'Edition Client: ' + $scope.client.reference + ' effectué avec succès', 'success');
 
 
-            if (msg != '')
-            {
-                notifyBox('Erreur', msg, 'error');
-            } else
-            {
-                $scope.client.idUser = $localStorage.idUser;
+                            $timeout(function () {
+                                viderChampsClient();
+                                $state.go('app.clients');
+                            }, 800);
 
-                ServiceClients.saveClient($scope.client).then(function () {
-                    /*
-                     var datAuj = new Date();
-                     var today = Date.parse(datAuj);
-                     var historique =
-                     {
-                     "idHistro": (Date.now() + "").substring(4, 15),
-                     "NameUser": $localStorage.NameUser,
-                     "idObjet": $scope.client.nom,
-                     "typeHisto": "client",
-                     "typeAction": 0,
-                     "data": "",
-                     "datAction": today
-                     };
-                     if ($scope.client.Oper === 1) {
-                     historique.typeAction = 2;
-                     }
-                     ServicesHistoriques.inserthistorique(historique);
-                     */
-                    
-                    notifyBox('Succès', 'Edition Client: ' + $scope.client.reference + ' effectué avec succès', 'success');
-                    viderChampsClient();
-                    
-                    $timeout(function () {
-                        $state.go('app.clients');
-                    }, 1000);
-
-                });
-            }
+                        });
+                    }
+                }
+            });
 
         };
 

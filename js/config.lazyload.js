@@ -93,6 +93,13 @@ angular.module('app')
                   ]
               },
               {
+                  name: 'angular-toasty',
+                  files: [
+                      'vendor/modules/angularjs-toasty/angular-toasty.min.js',
+                      'vendor/modules/angularjs-toasty/angular-toasty.min.css'
+                  ]
+              },
+              {
                   name: 'textAngular',
                   files: [
                       'vendor/modules/textAngular/textAngular-sanitize.min.js',
@@ -143,6 +150,18 @@ angular.module('app')
                   ]
               },
               {
+                  name: 'ServiceUsers',
+                  files: [
+                      'js/services/UserServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceUtiles',
+                  files: [
+                      'js/services/UtilesServ.js'
+                  ]
+              },
+              {
                   name: 'ServiceClients',
                   files: [
                       'js/services/ClientServ.js'
@@ -155,9 +174,39 @@ angular.module('app')
                   ]
               },
               {
-                  name: 'ServiceUsers',
+                  name: 'ServiceArticles',
                   files: [
-                      'js/services/UserServ.js'
+                      'js/services/ArticleServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceCommande',
+                  files: [
+                      'js/services/CommandeServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceFacture',
+                  files: [
+                      'js/services/FactureServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceBonLivraison',
+                  files: [
+                      'js/services/BonLivraisonServ.js'
+                  ]
+              },
+              {
+                  name: 'ServicePaiements',
+                  files: [
+                      'js/services/PaiementServ.js'
+                  ]
+              },
+              {
+                  name: 'ServiceHistorique',
+                  files: [
+                      'js/services/HistoriqueServ.js'
                   ]
               }
           ]
