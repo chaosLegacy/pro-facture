@@ -1,0 +1,89 @@
+<div ng-controller="GesArticlesController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-shopping-cart">&nbsp;</i>Édition Article <label
+                ng-show="article.idArticle !== ''">{{": "+article.reference}}</label></h1>
+        <nav class="m-t-n-lg pull-right">
+            <button class="btn btn-sm btn-default" ng-click="back()"><i
+                    class="glyphicon glyphicon-chevron-left"></i></button>
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="saveArticle(article)"><i
+                    class="glyphicon glyphicon-check"></i>Valider</button>
+        </nav>
+    </div>
+    <div class="wrapper-md">
+        <div class="main">
+            <!-- toaster directive -->
+            <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}">
+            </toaster-container>
+            <!-- / toaster directive -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="referenceA">Référence</label>
+                                <input type="text" class="form-control" id="referenceA"
+                                    placeholder="Saisir la Réference" maxlength="20" ng-model="article.reference"
+                                    ng-disabled="true">
+                            </div>
+                            <div class="form-group">
+                                <label for="designtaionA">Désignation</label>
+                                <input type="text" class="form-control" id="designtaionA"
+                                    placeholder="Saisir la Désignation" ng-model="article.designation">
+                            </div>
+                            <div class="form-group">
+                                <label for="photoA">photo</label>
+                                <input type="file" nv-file-select="" uploader="uploader" class="form-control"
+                                    ng-model="article.photo" />
+                            </div>
+                            <div class="form-group">
+                                <label for="descriptionA">Description</label>
+                                <textarea class="form-control textarea" rows="5" id="descriptionA"
+                                    placeholder="Saisir une description" maxlength="500"
+                                    ng-model="article.description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="natureA">Nature</label>
+                                <select class="form-control" id="natureA" ng-model="article.idNature" name="nature"
+                                    required>
+                                    <option value="0">Produit</option>
+                                    <option value="1">Service</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="uniteA">Unité</label>
+                                <select class="form-control" id="uniteA" ng-model="article.idUnite" name="unit"
+                                    ng-options="value.idUnite as value.label for value in Listeunits" required>
+                                    <!--<option value="" selected>--Sélectionner une valeur--</option>-->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tvaA">TVA</label>
+                                <select class="form-control" id="tvaA" ng-model="article.idTva" name="tva"
+                                    ng-options="value.idTva as value.valeur for value in ListeTva" required>
+                                    <!--<option value="" selected>--Sélectionner une valeur--</option>-->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prixA">Prix d'achat</label>
+                                <input type="text" class="form-control" rows="3" placeholder="Saisir le prix d'achat"
+                                    id="prixA" maxlength="9" numbers-only prix-marge operation="margeFromPrix"
+                                    article="article" ng-model="article.prixA" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="prixVA">Prix de vente</label>
+                                <input type="text" class="form-control" placeholder="Saisir le prix de vente"
+                                    id="prixVA" maxlength="9" numbers-Only prix-marge operation="margeFromPrix"
+                                    article="article" ng-model="article.prixV" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

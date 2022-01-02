@@ -1,0 +1,117 @@
+<div ng-controller="GesClientsController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-user">&nbsp;</i>Fiche client <label>: {{client.reference}}</label></h1>
+        <nav class="m-t-n-lg pull-right">
+            <button class="btn btn-sm btn-default" ng-click="back()"><i class="glyphicon glyphicon-chevron-left"></i></button>
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="updateClient(client.idClient)"><i class="fa fa-edit"></i>Éditer</button>
+        </nav>
+    </div>
+    <div class="wrapper-md">
+        <div class="main">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i>&nbsp; Informations générales</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Référence</label>
+                                <div class="text-muted">{{client.reference}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Nom</label>
+                                <div class="text-muted">{{client.nom}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Type</label>
+                                <div class="text-muted">{{client.type}}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <span class="pull-right" ng-show="client.email != ''">
+                                    <a href="mailto:{{client.email}}" ng-click="sendEmail(client.email, 'subject', 'body')"><i class="glyphicon glyphicon-envelope"></i></a>
+                                </span>
+                                <div class="text-muted">{{client.email}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Téléphone</label>
+                                <span class="pull-right" ng-show="client.tel.length == 10">
+                                    <a ng-click="CallTel(client.tel)"><i class="glyphicon glyphicon-phone"></i></a>
+                                </span>
+                                <div class="text-muted">{{client.tel}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Fax</label>
+                                <div class="text-muted">{{client.fax}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button class="close" ng-click="callMap()"><i class="glyphicon glyphicon-map-marker"></i></button>
+                    <h3 class="panel-title"><i class="fa fa-fax"></i>&nbsp; Adresse de facturation</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Rue</label>
+                                <div class="text-muted">{{client.rueF}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Code postal</label>
+                                <div class="text-muted">{{client.codePF}}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ville</label>
+                                <div class="text-muted">{{client.villeF}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Pays</label>
+                                <div class="text-muted">{{client.paysF}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel panel-default" ng-show="client.rueL != '' || client.codePL != '' || client.villeL != '' || client.paysL != '' ">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-inbox"></i>&nbsp; Adresse de livraison</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Rue</label>
+                                <div class="text-muted">{{client.rueL}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Code postal</label>
+                                <div class="text-muted">{{client.codePL}}</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Ville</label>
+                                <div class="text-muted">{{client.villeL}}</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Pays</label>
+                                <div class="text-muted">{{client.paysL}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

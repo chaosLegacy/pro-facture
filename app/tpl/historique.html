@@ -1,0 +1,80 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="HistoriquesController">
+    <!-- .col -->
+    <div class="col w-lg bg-light dk b-r bg-auto" id="aside">
+        <div class="wrapper bg b-b">
+            <button class="btn btn-sm btn-success pull-right" ui-toggle-class="timeline-center" target=".timeline">Centrer</button>
+            <h3 class="m-n font-thin"><i class="glyphicon glyphicon-time">&nbsp;</i>Historique</h3>
+        </div>
+        <div class="wrapper">
+            <form>
+                <div class="form-group">
+                    <label>Rechercher</label>
+                    <div class="input-group">
+                        <input type="text" class="input-sm form-control" placeholder="Rechercher..." ng-model="histoFilter" >
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-default disabled" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                    
+                    <br/>
+                    
+                    <label>Filtrer par</label>
+                    <div class="form-group">
+                        <select class="form-control input-sm" ng-model="histoFilter">
+                            <option value="0">Afficher tout</option>
+                            <optgroup label="Gestion contact">
+                                <option value="client">Clients</option>
+                                <option value="fournisseur">Fournisseurs</option>
+                            </optgroup>
+                            <optgroup label="Gestion de stock">
+                                <option value="article">Articles</option>
+                                <option value="stock">Intervention</option>
+                            </optgroup>
+                            <optgroup label="Gestion des achats">
+                                <option value="commandeAchat">Commandes</option>
+                                <option value="factureAchat">factures</option>
+                                <option value="bonLivraisonAchat">Bon de livraison</option>
+                            </optgroup>
+                            <optgroup label="Gestion des ventes">
+                                <option value="commandeVente">Commandes</option>
+                                <option value="factureVente">factures</option>
+                                <option value="bonLivraisonVente">Bon de livraison</option>
+                            </optgroup>
+                            <optgroup label="Paiements">
+                                <option value="paiement">Paiements</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /.col -->
+    <!-- .col -->
+    <div class="col">
+        <div class="wrapper" style="max-height: 100vh; overflow-y: scroll">
+            <ul class="timeline" ng-repeat="historique in Historiques | filter:histoFilter">
+                <li class="tl-header" ng-hide="historique.samury === ''">
+                    <div class="btn btn-default">{{historique.samury}}</div>
+                </li>
+                <li class="tl-item" ng-class="{'tl-left':$index % 2 === 0}">
+                    <div class="tl-wrap" ng-class="historique.wireClass">
+                        <span class="tl-date">{{historique.time}}</span>
+                        <div class="tl-content panel padder b-a historique-block">
+                            <span class="arrow left pull-up hidden-left"></span>
+                            <span class="arrow right pull-up visible-left"></span>
+                            <span class="pull-left thumb-md padder">
+                                <img src="{{historique.photo}}" alt="" class="img-circle">
+                            </span>
+                            <div class="w-auto">{{historique.AffichageAction}}</div>
+                        </div>
+                    </div>
+                </li>
+                <li class="tl-header" ng-show="$last">
+                    <div class="btn btn-md btn-default btn-rounded">Fin</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /.col -->            
+</div>

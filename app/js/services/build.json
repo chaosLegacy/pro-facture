@@ -1,0 +1,48 @@
+{
+    "folders": [
+        {
+            "name": "catalogs",
+            "folders": [
+                {
+                    "name": "products"
+                }
+            ]
+        },
+        {
+            "name": "logos"
+        },
+        {
+            "name": "docs",
+            "folders": [
+                {
+                    "name": "ventes",
+                    "folders": [
+                        {
+                            "name": "commande"
+                        },
+                        {
+                            "name": "facture"
+                        },
+                        {
+                            "name": "bonLivraison"
+                        }
+                    ]
+                },
+                {
+                    "name": "achats",
+                    "folders": [
+                        {
+                            "name": "commande"
+                        },
+                        {
+                            "name": "facture"
+                        },
+                        {
+                            "name": "bonLivraison"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

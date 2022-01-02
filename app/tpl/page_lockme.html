@@ -1,0 +1,21 @@
+<div class="modal-over bg-black" ng-controller="LockmeController">
+    <div class="modal-center animated fadeInUp text-center" style="width:200px;margin:-100px 0 0 -100px;">
+        <!-- toaster directive -->
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+        <!-- / toaster directive -->
+        <div class="thumb-lg">
+            <img src="{{app.user.picture}}" class="img-circle">
+        </div>
+        <p class="h4 m-t m-b">{{app.user.userName}}</p>
+        <form name="form" class="form-validation">
+            <div class="input-group">
+
+                <input type="password" class="form-control text-sm btn-rounded no-border" placeholder="Votre mot de passe pour continuer" ng-model="user.password">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-success btn-rounded no-border" data-ng-click="unlock()"><i class="fa fa-arrow-right"></i></button>
+                </span>
+            </div>
+        </form>
+
+    </div>
+</div>

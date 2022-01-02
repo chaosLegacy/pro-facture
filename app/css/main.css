@@ -1,0 +1,367 @@
+/* 
+    Created on : Mar 18, 2016, 12:18:57 AM
+    Author     : Youssef
+*/
+.historique-block {
+    min-width: 330px;
+}
+svg {
+    display: block;
+    overflow: visible;
+}
+
+html, body, #chart1, svg {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+.svgHieghtChart {
+    min-height: 472px !important;
+}
+
+.blur {
+    /*height: 250px;*/
+    /*width: 100%;*/
+    /*margin: -20px auto;*/
+    z-index: -1;
+    position: relative;
+    filter: blur(10px);
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: url(#blur);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.blur:after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .2);
+    position: absolute;
+    pointer-events: none;
+}
+
+.img-block {
+    display: block;
+    margin: 0 auto;
+}
+.colorPicker .input-group{
+    display: flex;
+}
+.colorPicker .input-group label {
+    cursor: pointer;
+    min-width: 32px;
+    line-height: 1.6em;
+}
+.colorPicker .input-group .input-color {
+    width: 20% !important;
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+    border-width: 0;
+}
+.colorPicker input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.input-disabled {
+    background-color: transparent !important;
+}
+.right-0 {
+    left: inherit;
+    right: 0 !important;
+}
+.small-input {
+    max-width: 98px;
+}
+.text-overflow {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.margin-bottom-none {
+    margin-bottom: 0;
+}
+ul.dropdown-menu.ng-valid-date table thead tr th{
+    text-align: center;
+}
+ul.dropdown-menu.ng-valid-date table tbody tr td button.btn, ul.dropdown-menu.ng-valid-date table thead tr th button.btn {
+    border: 1px solid #d3d3d3;
+    background-color: #FFFFFF;
+}
+ul.dropdown-menu.ng-valid-date table tbody tr td button.btn:hover{
+    background: #c9cccf;
+}
+ul.dropdown-menu.ng-valid-date table tbody tr td button.btn-info{
+    background-color: #00c0ef;
+    border-color: #269abc;
+}
+ul.dropdown-menu.ng-valid-date table tbody tr td button.btn-info:hover{
+    background-color: #39b3d7;
+    border-color: #269abc;
+}
+ul.dropdown-menu.ng-valid-date table tbody tr td button.btn-info .text-info {
+    color: #FFFFFF;
+}
+
+.logo-header {
+    max-height: 70px !important;
+}
+.form-box {
+    background-color: rgba(255,255,255,.78);
+    box-shadow: 1px 2px 7px rgba(0,0,0,.55);
+}
+
+.help-block {
+    margin-bottom: 0;
+}
+.textarea {
+    height: 108px !important;
+    resize: none;
+}
+.slide.ng-hide-add,
+.slide.ng-hide-remove {
+    -webkit-transition: all linear 0.5s;
+    -moz-transition: all linear 0.5s;
+    -o-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+    display: block!important;
+}
+.slide.ng-hide-add.ng-hide-add-active,
+.slide.ng-hide-remove {
+    opacity: 0;
+}
+.slide.ng-hide-add,
+.slide.ng-hide-remove.ng-hide-remove-active {
+    opacity: 1;
+}
+
+.slider {
+    position: relative;
+}
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+.loading-container .loading {
+    padding: 14px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-overflow: ellipsis;
+}
+.loading-container .loading img {
+    opacity: .71;
+}
+.loading-container.visible {
+    visibility: visible;
+}
+.loading-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 13;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-transition: 0.2s opacity linear;
+    transition: 0.2s opacity linear;
+    background-color: rgba(0,0,0,.2);
+    visibility: hidden;
+}
+
+.profile .settings {
+    position: relative;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+@media only screen and (max-width: 800px) {
+
+    /* Force table to not be like tables anymore */
+    .responsive-table table,
+    .responsive-table thead,
+    .responsive-table tbody,
+    .responsive-table th,
+    .responsive-table td,
+    .responsive-table tr {
+        display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .responsive-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .responsive-table tr { border: 1px solid #ccc; }
+
+    .responsive-table td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50% !important;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .responsive-table td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    .responsive-table td:before { content: attr(data-title); }
+}
+
+
+/* --- Ribon css Start----------------- */
+.ribbon.ribbon-green {
+    background-color: #BFDC7A;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#BFDC7A), to(#8EBF45));
+    background-image: -webkit-linear-gradient(top, #BFDC7A, #8EBF45);
+    background-image: -moz-linear-gradient(top, #BFDC7A, #8EBF45);
+    background-image: -ms-linear-gradient(top, #BFDC7A, #8EBF45);
+    background-image: -o-linear-gradient(top, #BFDC7A, #8EBF45);
+    color: #f3f3f3;
+}
+
+.ribbon.ribbon-red {
+    background-color: #ff7f7f;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ff7f7f), to(#cc0000));
+    background-image: -webkit-linear-gradient(top, #ff7f7f, #cc0000);
+    background-image: -moz-linear-gradient(top, #ff7f7f, #cc0000);
+    background-image: -ms-linear-gradient(top, #ff7f7f, #cc0000);
+    background-image: -o-linear-gradient(top, #ff7f7f, #cc0000);
+    color: #f3f3f3;
+}
+
+.ribbon.ribbon-orange {
+    background-color: #ffc966;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc966), to(#ffb732));
+    background-image: -webkit-linear-gradient(top, #ffc966, #ffb732);
+    background-image: -moz-linear-gradient(top, #ffc966, #ffb732);
+    background-image: -ms-linear-gradient(top, #ffc966, #ffb732);
+    background-image: -o-linear-gradient(top, #ffc966, #ffb732);
+    color: #f3f3f3;
+}
+
+.ribbon.ribbon-blue {
+    background-color: #72c0ef;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#72c0ef), to(#43abea));
+    background-image: -webkit-linear-gradient(top, #72c0ef, #43abea);
+    background-image: -moz-linear-gradient(top, #72c0ef, #43abea);
+    background-image: -ms-linear-gradient(top, #72c0ef, #43abea);
+    background-image: -o-linear-gradient(top, #72c0ef, #43abea);
+    color: #f3f3f3;
+}
+
+.ribbon.ribbon-purple {
+    background-color: #bf7fbf;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#bf7fbf), to(#a64ca6));
+    background-image: -webkit-linear-gradient(top, #bf7fbf, #a64ca6);
+    background-image: -moz-linear-gradient(top, #bf7fbf, #a64ca6);
+    background-image: -ms-linear-gradient(top, #bf7fbf, #a64ca6);
+    background-image: -o-linear-gradient(top, #bf7fbf, #a64ca6);
+    color: #f3f3f3;
+}
+
+.ribbon.ribbon-grey {
+    background-color: #cccccc;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#b2b2b2));
+    background-image: -webkit-linear-gradient(top, #cccccc, #b2b2b2);
+    background-image: -moz-linear-gradient(top, #cccccc, #b2b2b2);
+    background-image: -ms-linear-gradient(top, #cccccc, #b2b2b2);
+    background-image: -o-linear-gradient(top, #cccccc, #b2b2b2);
+    color: #f3f3f3;
+}
+.ribbon.ribbonAnnuler{
+    background-color: #cccccc;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#646464));
+    background-image: -webkit-linear-gradient(top, #cccccc, #646464);
+    background-image: -moz-linear-gradient(top, #cccccc, #646464);
+    background-image: -ms-linear-gradient(top, #cccccc, #646464);
+    background-image: -o-linear-gradient(top, #cccccc, #646464);
+
+    color: #FFFFFF;
+}
+.buttonAnnuler{
+    color:#646464;
+}
+.label-annuler{
+    background-color: #646464;
+}
+.ribbon-wrapper {
+    width: 138px;
+    height: 128px;
+    overflow: hidden;
+    position: absolute;
+    right: 20px;
+    z-index: 9;
+}
+
+
+.ribbon {
+    font: bold 18px Sans-Serif;
+    color: #333;
+    text-align: center;
+    text-shadow: rgba(255, 255, 255, 0.5) 0px 1px 0px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    position: relative;
+    padding: 10px 0;
+    left: -5px;
+    top: 20px;
+    width: 185px;
+    -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+}
+
+.ribbon:before {
+    left: 0;
+}
+
+.ribbon:after {
+    right: 0;
+}
+/* --- Ribon css Close----------------- */

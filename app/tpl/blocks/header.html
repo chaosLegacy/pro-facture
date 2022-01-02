@@ -1,0 +1,119 @@
+<!-- navbar header -->
+<div class="navbar-header {{app.settings.navbarHeaderColor}}">
+    <button class="pull-right visible-xs dk" ui-toggle-class="show" data-target=".navbar-collapse">
+        <i class="glyphicon glyphicon-cog"></i>
+    </button>
+    <button class="pull-right visible-xs" ui-toggle-class="off-screen" data-target=".app-aside" ui-scroll="app">
+        <i class="glyphicon glyphicon-align-justify"></i>
+    </button>
+    <!-- brand -->
+    <a href="#/" class="navbar-brand text-lt">
+        <!--<i class="fa fa-btc"></i>-->
+        <img src="img/ProFacture-favicon.ico" alt="." class="inline">
+        <span class="hidden-folded m-l-xs">{{app.name}}</span>
+    </a>
+    <!-- / brand -->
+</div>
+<!-- / navbar header -->
+
+<!-- navbar collapse -->
+<div class="collapse pos-rlt navbar-collapse box-shadow {{app.settings.navbarCollapseColor}}">
+    <!-- buttons -->
+    <div class="nav navbar-nav hidden-xs">
+        <a href class="btn no-shadow navbar-btn" ng-click="app.settings.asideFolded = !app.settings.asideFolded">
+            <i class="fa {{app.settings.asideFolded ? 'fa-indent' : 'fa-dedent'}} fa-fw"></i>
+        </a>
+        <a href class="btn no-shadow navbar-btn" ui-toggle-class="hide" target="#aside-user">
+            <i class="icon-user fa-fw"></i>
+        </a>
+    </div>
+    <!-- / buttons -->
+
+    <!-- nabar right -->
+    <ul class="nav navbar-nav navbar-right">
+        <!--          <li class="dropdown hidden-sm" is-open="lang.isopen" dropdown>
+                    <a href class="dropdown-toggle" dropdown-toggle>
+                      {{selectLang}} <b class="caret"></b>
+                    </a>
+                     dropdown 
+                    <ul class="dropdown-menu animated fadeInRight w">
+                      <li ng-repeat="(langKey, label) in langs">
+                        <a ng-click="setLang(langKey, $event)" href>{{label}}</a>
+                      </li>
+                    </ul>
+                     / dropdown 
+                  </li>-->
+        <li class="hidden-xs">
+            <a ui-fullscreen></a>
+        </li>
+        <li class="dropdown" dropdown ng-controller="RootController">
+            <a href class="dropdown-toggle" dropdown-toggle ng-click="callHistorique()">
+                <i class="icon-bell fa-fw"></i>
+                <span class="visible-xs-inline">Notifications</span>
+                <span class="badge badge-sm up bg-danger pull-right-xs">{{Historiques.length}}</span>
+            </a>
+            <!-- dropdown -->
+            <div class="dropdown-menu w-xl animated fadeInUp">
+                <div class="panel bg-white">
+                    <div class="panel-heading b-light bg-light">
+                        <strong>Vous avez <span>{{Historiques.length}}</span> notifications</strong>
+                    </div>
+                    <div class="panel-bod" style="max-height: 333px; overflow-y: scroll">
+                        <div class="list-group margin-bottom-none" ng-repeat="historique in Historiques">
+                            <a href class="media list-group-item">
+                                
+                                <span class="pull-left thumb-sm">
+                                    <img src="{{historique.photo}}" alt="" class="img-circle">
+                                </span>
+                                <span class="media-body block m-b-none">
+                                    {{historique.AffichageAction}}<br>
+                                    <small class="text-muted text-right block">{{historique.time}}</small>
+                                </span>
+                            </a>
+                        </div> 
+                    </div>
+
+                    <div class="panel-footer text-sm" ng-hide="Historiques.length === 0">
+                        <button class="pull-right btn btn-xs btn-danger" ng-click="removeAllHistorique()"><i class="fa fa-trash"></i></button>
+                        <a data-ui-sref="app.historique" data-toggle="class:show animated fadeInRight"><i class="fa fa-eye"></i>&nbsp;Voir toutes les notifications</a>
+                    </div>
+                </div>
+            </div>
+            <!-- / dropdown -->
+        </li>
+        <li class="dropdown" dropdown ng-controller="RootController">
+            <a href class="dropdown-toggle clear" dropdown-toggle ng-click="callDateExpiration()">
+                <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                    <img src="{{app.user.picture}}" alt="...">
+                    <i class="on md b-white bottom"></i>
+                </span>
+                <span class="hidden-sm hidden-md">{{app.user.userName}}</span> <b class="caret"></b>
+            </a>
+            <!-- dropdown -->
+            <ul class="dropdown-menu animated fadeInRight w">
+                <li class="wrapper b-b m-b-sm bg-light m-t-n-xs" ng-if="app.user.typeAbonnement === app.abonnements.standardType">
+                    <div>
+                        <p>Il vous reste <b>{{daysLeft}}</b> <b ng-show="daysLeft === 1">jour</b><b ng-show="daysLeft > 1">jours</b> avant la fin de votre période d'essai</p>
+                    </div>
+                <progressbar value="daysLeft" class="progress-xs m-b-none bg-white"></progressbar>
+                </li>
+        <li>
+            <a data-ui-sref="app.profile">
+                <span>Paramètres</span>
+            </a>
+        </li>
+        <li>
+            <a data-ui-sref="app.profile">Profile</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a ng-click="logout()">Déconnexion</a>
+        </li>
+    </ul>
+    <!-- / dropdown -->
+</li>
+</ul>
+<!-- / navbar right -->
+
+</div>
+<!-- / navbar collapse -->

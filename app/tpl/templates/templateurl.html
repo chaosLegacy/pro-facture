@@ -1,0 +1,15 @@
+<div class="slider">
+    <div class="slide" ng-repeat="slide in slides" ng-show="slide.visible">
+        <div class="well container w-xxl w-auto-xs astuce-box">
+            <div class="media"> 
+                <div class="media-left"> 
+                    <i class="media-object glyphicon {{slide.icon}}" style="width: 64px;height: 64px;font-size: 4em;"></i>
+                </div> 
+                <div class="media-body"> 
+                    <h3 class="media-heading" data-ng-bind-html="slide.title"></h3> 
+                    <p data-ng-bind-html="slide.description"></p>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>

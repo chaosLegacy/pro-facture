@@ -1,0 +1,97 @@
+<div ng-controller="BonLivraisonAController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-paperclip">&nbsp;</i>Liste de vos bon de livraison d'achat</h1>
+        <nav class="m-t-n-lg pull-right">
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="addBonLivraisonAchat()"><i class="fa fa-plus"></i>Ajouter une bon de livraison</button>
+        </nav>
+    </div>
+    <div class="wrapper-md">
+        
+        <!-- toaster directive -->
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+        <!-- / toaster directive -->
+        <div class="panel panel-default">
+
+            <div class="row wrapper">
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" class="input-sm form-control" placeholder="Search" ng-model="bonLivraisonFilter">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-default disabled" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-5 m-b-xs">
+                    <div class="btn-group dropdown pull-right" data-dropdown="">
+                        <button type="button" class="btn btn-default">Trier par</button>
+                        <button type="button" class="btn btn-default" data-dropdown-toggle="" data-aria-haspopup="true" data-aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ng-click="orderBy('reference')">
+                                    <span>Référence </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'reference', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'reference'}"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="orderBy('date')">
+                                    <span>Date </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'date', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'date'}"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light" data-ui-jq="footable" data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">RÉFÉRENCE</th>
+                            <th>Description</th>
+                            <th>DATE</th>
+                            <th class="text-center" width="100">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="bonLivraison in ListeBonLivraisonAchat| filter:bonLivraisonFilter | orderBy: sort.label:reverse"
+
+                            ng-dblclick="updateBonLivraisonAchat(bonLivraison.idBonLivraison)">
+
+                            <td data-toggle="true" data-title="RÉFÉRENCE">
+                                <span class="text-muted">{{bonLivraison.reference}}</span>
+                            </td>
+                            <td data-hide="tablet,phone" data-title="DÉSCRIPTION">
+                                <span class="text-muted">{{bonLivraison.description}}</span>
+                            </td>
+                            <td data-hide="phone" data-title="DATE">
+                                <span>{{bonLivraison.date}}</span>
+                            </td>
+                            <td data-title="ACTIONS" class="text-right">
+                                <select ng-model="action" ng-change="selectedAction(action, bonLivraison.idBonLivraison)">
+                                    <option value="" selected>--Sélectionner une action--</option>
+                                    <option value="updateBonLivraisonAchat">Modifier</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="">
+                        <tr>
+                            <td colspan="3">
+                                <button class="btn btn-sm btn-dark btn-addon" ng-click="addBonLivraisonAchat()"><i class="fa fa-plus"></i>Ajouter une bonLivraison</button>
+                            </td>
+                            <td colspan="4" class="text-right">
+                                <ul class="pagination pagination-sm m-t-none m-b-none"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="text-center text-bold text-muted">
+                    <div ng-show="ListeBonLivraisonAchat.length <= 0" >Vous n'avez aucun bonLivraison pour le moment pensez d'ajouter un en cliquant sur la bouton <span class="text-green">Ajouter une BonLivraison d'achat</span>.<hr/></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

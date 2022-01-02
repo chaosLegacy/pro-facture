@@ -1,0 +1,358 @@
+<div ng-controller="PaiementsController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-credit-card">&nbsp;</i>Liste de vos paiements</h1>
+        <nav class="m-t-n-lg pull-right">
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="addPaiementEntrant()"><i class="fa fa-plus"></i>Crédit</button>
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="addPaiementSortant()"><i class="fa fa-plus"></i>Débit</button>
+        </nav>
+    </div>
+    <div class="wrapper-md">
+        
+        <!-- toaster directive -->
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+        <!-- / toaster directive -->
+        <div class="panel panel-default">
+
+            <div class="row wrapper">
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" class="input-sm form-control" placeholder="Search" ng-model="paiementFilter">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-default disabled" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-5 m-b-xs">
+                    <div class="btn-group dropdown pull-right" data-dropdown="">
+                        <button type="button" class="btn btn-default">Trier par</button>
+                        <button type="button" class="btn btn-default" data-dropdown-toggle="" data-aria-haspopup="true" data-aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ng-click="orderBy('clientFour')">
+                                    <span>Client/Fournisseur </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'clientFour', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'clientFour'}"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="orderBy('date')">
+                                    <span>Date </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'date', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'date'}"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="orderBy('montant')">
+                                    <span>Montant </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'montant', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'montant'}"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light" data-ui-jq="footable" data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th data-toggle="true" >DESCRIPTION</th>
+                            <th data-hide="tablet,phone">CLIENT/FOURNISSEUR</th>
+                            <th data-hide="tablet,phone">DATE</th>
+                            <th data-hide="phone">MONTANT</th>
+                            <th class="text-center" width="100">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="paiement in ListPaiements| filter:paiementFilter | orderBy: sort.label:reverse">
+                            
+                            <td data-title="DESCRIPTION">
+                                <span>{{paiement.description}}</span>
+                            </td>
+                            <td data-title="CLIENT/FOURNISSEUR">
+                                <span>{{paiement.clientFour}}</span>
+                            </td>
+                            <td data-title="DATE">
+                                <span>{{paiement.datePaiement}}</span>
+                            </td>
+                            <td data-title="MONTANT" class="text-right">
+                                <b  ng-class="{'text-danger':paiement.idType === 0,'text-success':paiement.idType === 1}">{{paiement.montant | numeraljs}} {{currency}}</b>
+                            </td>
+                            <td data-title="ACTIONS" class="text-right">
+                                <button class="btn btn-xs btn-danger" ng-click="deletePaiement(paiement.idPaiement)"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="">
+                        <tr>
+                            <td colspan="3"></td>
+                            <td colspan="4" class="text-right">
+                                <ul class="pagination pagination-sm m-t-none m-b-none"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="text-center text-bold text-muted">
+                    <div ng-show="ListPaiements.length <= 0" >Vous n'avez aucun paiement pour le moment pensez d'ajouter un en cliquant sur la bouton <span class="text-green">Crédit ou Débit</span>.<hr/></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals Start-->
+<script type="text/ng-template" id="paiementEntrant.tpl.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2><i class="glyphicon glyphicon-log-in"></i>&nbsp; Fiche Paiement entrant</h2>
+    </div>
+    
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Référence Facture</label></div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" ng-model="factureV.reference" class="form-control" disabled>
+                            <span class="input-group-btn">
+                                <button class="btn btn-dark" ng-click="ListePaiementEntrant()"
+                                        type="button"><i class="glyphicon glyphicon-eye-open"></i>
+                                </button>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Date de paiement</label></div>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="paiement.datePaiement" is-open="openedCre" ng-required="true" close-text="Fermer" clear-text="Effaçer" current-text="Ajourdh'ui"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="datePaiement($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Moyen de paiement</label></div>
+                            <div class="col-sm-6 leftText">
+                                <select ng-model="paiement.idMode" name="mode" class="form-control"
+                                        ng-options="value.idMode as value.label for value in ListModePaiements">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Montant <b>({{currency}})</b></label></div>
+                            <div class="col-sm-6 leftText">
+                                <input type="tel" ng-model="paiement.montant" ng-value="restApayer(facture)"
+                                       class="form-control" maxlength="9"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Déscription</label></div>
+                            <div class="col-sm-6 leftText">
+                    <textarea ng-model="paiement.description" maxlength="500" rows="4"
+                              class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="modal-footer">            
+    <button class="btn btn-default" ng-click="cancel()"><i class="fa fa-reply"></i> Annuler</button>
+    <button class="btn btn-dark" ng-click="validerFichePaiement(paiement)">Valider <i class="fa fa-check"></i></button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="listePaiementEntrant.tpl.html">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h2>Liste des factures vente impayés</h2>
+    </div>
+    <div class="modal-body">
+
+    <div class="input-group">
+    <label class="input-group-btn" for="factFilter">
+    <button class="btn btn-sm btn-default disabled" type="button"><i class="glyphicon glyphicon-search"></i></button>
+    </label>
+    <input type="text" class="input-sm form-control" placeholder="Rechercher" id="factFilter" ng-model="factFilter">
+    </div>
+    <br/>
+
+    <div class="col-sm-12" style="max-height:550px; overflow-y: scroll">
+    <div class="table-responsive">
+    <table class="table table-striped b-t b-light">
+    <thead>
+    <tr>
+    <th>Réf</th>
+    <th>Client</th>
+    <th>Date</th>
+    <th>Reste à payer</th>
+    <th style="width:30px;">Choisir</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="facture in ListeFactures | filter:factFilter">
+    <td>{{facture.reference}}</td>
+    <td>{{facture.client}}</td>
+    <td>{{facture.date}}</td>
+    <td>{{facture.restApayer | numeraljs}} <b>{{currency}}</b></td>
+    <td><button class="btn btn-xs btn-success" ng-click="getFacture(facture)"><i class="glyphicon glyphicon-check"></i></button></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="modal-footer">            
+    <button class="btn btn-default" ng-click="cancel()"><i class="fa fa-reply"></i> Annuler</button>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="paiementSortant.tpl.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2><i class="glyphicon glyphicon-log-in"></i>&nbsp; Fiche Paiement sortant</h2>
+    </div>
+    
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Référence Facture</label></div>
+
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" ng-model="factureA.reference" class="form-control" disabled>
+                            <span class="input-group-btn">
+                                <button class="btn btn-dark" ng-click="ListePaiementSortant()"
+                                        type="button"><i class="glyphicon glyphicon-eye-open"></i>
+                                </button>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Date de paiement</label></div>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="paiement.datePaiement" is-open="openedCre" ng-required="true" close-text="Fermer" clear-text="Effaçer" current-text="Ajourdh'ui"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="datePaiement($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Moyen de paiement</label></div>
+                            <div class="col-sm-6 leftText">
+                                <select ng-model="paiement.idMode" name="mode" class="form-control"
+                                        ng-options="value.idMode as value.label for value in ListModePaiements">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Montant <b>({{currency}})</b></label></div>
+                            <div class="col-sm-6 leftText">
+                                <input type="tel" ng-model="paiement.montant" ng-value="restApayer(facture)"
+                                       class="form-control" maxlength="9"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row ">
+                            <div class="col-sm-6"><label>Déscription</label></div>
+                            <div class="col-sm-6 leftText">
+                    <textarea ng-model="paiement.description" maxlength="500" rows="4"
+                              class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="modal-footer">            
+    <button class="btn btn-default" ng-click="cancel()"><i class="fa fa-reply"></i> Annuler</button>
+    <button class="btn btn-dark" ng-click="validerFichePaiement(paiement)">Valider <i class="fa fa-check"></i></button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="listePaiementSortant.tpl.html">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h2>Liste des factures achats impayés</h2>
+    </div>
+    <div class="modal-body">
+
+    <div class="input-group">
+    <label class="input-group-btn" for="factFilter">
+    <button class="btn btn-sm btn-default disabled" type="button"><i class="glyphicon glyphicon-search"></i></button>
+    </label>
+    <input type="text" class="input-sm form-control" placeholder="Rechercher" id="factFilter" ng-model="factFilter">
+    </div>
+    <br/>
+
+    <div class="col-sm-12" style="max-height:550px; overflow-y: scroll">
+    <div class="table-responsive">
+    <table class="table table-striped b-t b-light">
+    <thead>
+    <tr>
+    <th>Réf</th>
+    <th>Fournisseur</th>
+    <th>Date</th>
+    <th>Reste à payer</th>
+    <th style="width:30px;">Choisir</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="facture in ListeFactures | filter:factFilter">
+    <td>{{facture.reference}}</td>
+    <td>{{facture.fournisseur}}</td>
+    <td>{{facture.date}}</td>
+    <td>{{facture.restApayer | numeraljs}} <b>{{currency}}</b></td>
+    <td><button class="btn btn-xs btn-success" ng-click="getFacture(facture)"><i class="glyphicon glyphicon-check"></i></button></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="modal-footer">            
+    <button class="btn btn-default" ng-click="cancel()"><i class="fa fa-reply"></i> Annuler</button>
+    </div>
+</script>
+<!-- Modals End-->

@@ -1,0 +1,110 @@
+<div ng-controller="FournisseursController">
+    <div class="bg-light lter b-b wrapper-md">
+        <h1 class="m-n font-thin h3"><i class="glyphicon glyphicon-record">&nbsp;</i>Liste de vos fournisseurs</h1>
+        <nav class="m-t-n-lg pull-right">
+            <button class="btn btn-sm btn-dark btn-addon" ng-click="addFournisseur()"><i class="fa fa-plus"></i>Ajouter un fournisseur</button>
+        </nav>
+    </div>
+    <div class="wrapper-md">
+        <!-- toaster directive -->
+        <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+        <!-- / toaster directive -->
+        <div class="panel panel-default">
+
+            <div class="row wrapper">
+                <div class="col-sm-3">
+                    <div class="input-group">
+                        <input type="text" class="input-sm form-control" placeholder="Search" ng-model="fournisseurFilter">
+                        <span class="input-group-btn">
+                            <button class="btn btn-sm btn-default disabled" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-5 m-b-xs">
+                    <div class="btn-group dropdown pull-right" data-dropdown="">
+                        <button type="button" class="btn btn-default">Trier par</button>
+                        <button type="button" class="btn btn-default" data-dropdown-toggle="" data-aria-haspopup="true" data-aria-expanded="false">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ng-click="orderBy('nom')">
+                                    <span>Nom </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'nom', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'nom'}"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="orderBy('reference')">
+                                    <span>Référence </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'reference', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'reference'}"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="orderBy('ville')">
+                                    <span>Ville </span>
+                                    <i class="pull-right" ng-class="{'glyphicon glyphicon-sort-by-attributes':!reverse && sort.label == 'ville', 'glyphicon glyphicon-sort-by-attributes-alt':reverse && sort.label == 'ville'}"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light" data-ui-jq="footable" data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th data-toggle="true" style="width: 30%;">FOURNISSEUR</th>
+                            <th data-hide="phone,tablet">ADRESSE</th>
+                            <th data-hide="phone">VILLE</th>
+                            <th data-hide="phone">TÉLÉPHONE</th>
+                            <th class="text-center" width="100">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="fournisseur in ListeFournisseurs| filter:fournisseurFilter | orderBy: sort.label:reverse"
+
+                            ng-dblclick="selectFournisseur(fournisseur.idFournisseur)">
+
+                            <td data-title="FOURNISSEUR">
+                                <h4>{{fournisseur.nom}}</h4><span class="text-muted">{{fournisseur.reference}}</span>
+                            </td>
+                            <td data-title="ADRESSE">
+                                <span>{{fournisseur.rue}}</span><br/>
+                                <span>{{fournisseur.codeP}}</span><br/>
+                                <span>{{fournisseur.pays}}</span>
+                            </td>
+                            <td data-title="VILLE">
+                                <span>{{fournisseur.ville}}</span>
+                            </td>
+                            <td data-title="TÉLÉPHONE">
+                                <span>{{fournisseur.tel}}</span>
+                            </td>
+                            <td data-title="ACTIONS" class="text-right">
+                                <select ng-model="action" ng-change="selectedAction(action, fournisseur.idFournisseur)">
+                                    <option value="" selected>--Sélectionner une action--</option>
+                                    <option value="selectFournisseur">Voir</option>
+                                    <option value="updateFournisseur">Modifier</option>
+                                    <option value="deleteFournisseur">Supprimer</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="">
+                        <tr>
+                            <td colspan="3">
+                                <button class="btn btn-sm btn-dark btn-addon" ng-click="addFournisseur()"><i class="fa fa-plus"></i>Ajouter un fournisseur</button>
+                            </td>
+                            <td colspan="2" class="text-right">
+                                <ul class="pagination pagination-sm m-t-none m-b-none"></ul>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="text-center text-bold text-muted">
+                    <div ng-show="ListeFournisseurs.length <= 0" >Vous n'avez aucun fournisseur pour le moment pensez d'ajouter un en cliquant sur la bouton <span class="text-green">Ajouter un fournisseur</span>.<hr/></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
